@@ -1,13 +1,15 @@
 import { Layout } from './Layout';
 import { GlobalStyle } from './GlobalStyle';
 import { Component } from 'react';
-import { All } from './all/all';
+import { Statistics } from './Statistics/Statistics';
+import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
+import { Section } from './Section/Section';
 
 export class App extends Component {
   state = {
-    good: 2,
-    neutral: 2,
-    bad: 3,
+    good: 0,
+    neutral: 0,
+    bad: 0,
   };
 
   addFeedback = value => {
@@ -27,19 +29,29 @@ export class App extends Component {
   countPositiveFeedbackPercentage() {
     const { good, bad } = this.state;
     const percent = (good / (good + bad)) * 100;
-    return percent.toFixed(0);
+    return Number(percent.toFixed(0));
   }
 
   render() {
     return (
       <Layout>
-        <All
-          FeedBackList={this.state}
-          TotalFidback={this.countTotalFeedback()}
-          PositiveFeedback={this.countPositiveFeedbackPercentage()}
-          options={this.state}
-          onLeaveFeedback={this.addFeedback}
-        />
+        <Section title="Please leave feadback">
+          <FeedbackOptions
+            FeedBackList={this.state}
+            TotalFidback={this.countTotalFeedback()}
+            PositiveFeedback={this.countPositiveFeedbackPercentage()}
+            options={this.state}
+            onLeaveFeedback={this.addFeedback}
+          />
+        </Section>
+
+        <Section title="Statistics">
+          <Statistics
+            FeedBackList={this.state}
+            TotalFidback={this.countTotalFeedback()}
+            PositiveFeedback={this.countPositiveFeedbackPercentage()}
+          />
+        </Section>
         <GlobalStyle />
       </Layout>
     );
